@@ -31,5 +31,5 @@ jobs:
           TOKEN: "tokenkey"
           TRAFFIC: ${{ inputs.TRAFFIC }}
           REGION: "us-east-1"
-        run: go run ./scheduler/CloudRunMinInstanceUpdater.go
+        run: go run scheduler/CloudRunMinInstanceUpdater.go
 
