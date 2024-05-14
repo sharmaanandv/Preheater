@@ -104,7 +104,7 @@ func validateEnv() {
 }
 
 func getWhiteListedServices(traffic string) []Service {
-	file, err := os.Open(".github/scheduler/SchedulerServices.txt")
+	file, err := os.Open("./scheduler/SchedulerServices.txt")
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
