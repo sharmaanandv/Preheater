@@ -1,0 +1,29 @@
+name: Low Traffic Scheduler For Int Env
+
+on:
+  schedule:
+    - cron: '0 0 * * 1-5' # Runs at 8 PM EST (midnight UTC) Monday through Friday
+
+jobs:
+  LowTrafficScheduler:
+    runs-on: [size/small]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - id: 'auth'
+        uses: google-github-actions/auth@v0.7.1
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@v0.6.0
+      - name: Set up Go environment
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.18'
+      - name: Run Go
+        env:
+          TOKEN: $(gcloud auth print-access-token)
+          TRAFFIC: "low"
+          REGION: ${{ secrets.REGION }}
+        run: go run /etc/scheduler/CloudRunMinInstanceUpdater.go
+

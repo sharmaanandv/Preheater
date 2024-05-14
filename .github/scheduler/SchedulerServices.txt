@@ -1,0 +1,6 @@
+# This file help in reading list of Cloud Run Service and override min instances for low and high traffic
+# Expected pattern is <Service_name>=<low_traffic_count>,<high_traffic_count> OR <Service_name>
+# If nothing to override then service_name is sufficient
+
+abc-int
+

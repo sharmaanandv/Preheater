@@ -1,0 +1,29 @@
+name: High Traffic Scheduler For Int Env
+
+on:
+  schedule:
+    - cron: '0 12 * * 1-5' # This will run at 8 am EST (12 pm UTC) from Monday to Friday
+
+jobs:
+  HighTrafficScheduler:
+    runs-on: [size/small]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - id: 'auth'
+        uses: google-github-actions/auth@v0.7.1
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@v0.6.0
+      - name: Set up Go environment
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.18'
+      - name: Run Go
+        env:
+          TOKEN: $(gcloud auth print-access-token)
+          TRAFFIC: "high"
+          REGION: ${{ secrets.REGION }}
+        run: go run /etc/act/CloudRunMinInstanceUpdater.go
+
