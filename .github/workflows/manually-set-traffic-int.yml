@@ -9,6 +9,14 @@ on:
         options:
           - low
           - high
+      GOFILE:
+        required: true
+        description: 'temp change'
+        type: string
+      CSVFILE:
+        required: true
+        description: 'temp change'
+        type: string
 
 jobs:
   ManualTriggerScheduler:
@@ -31,5 +39,5 @@ jobs:
           TOKEN: "tokenkey"
           TRAFFIC: ${{ inputs.TRAFFIC }}
           REGION: "us-east-1"
-        run: go run ./scheduler/CloudRunMinInstanceUpdater.go
-
+          CSVFILE: ${{inputs.CSVFILE}}
+        run: go run ${{inputs.GOFILE}}

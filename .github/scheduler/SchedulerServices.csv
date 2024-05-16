@@ -1,3 +1,4 @@
-servicename,low_traffic_count,high_traffic_count
-abc-int,0,0
+ServiceName,    LowTraffic_MinInstance, HighTraffic_MinInstance
+anvil-int
+atlas-internal-int,  0, 1
 

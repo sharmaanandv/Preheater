@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
+	"encoding/csv"
 	"fmt"
 	"log"
 	"net/http"
@@ -20,17 +20,21 @@ const HighTraffic = "high"
 const REGION = "REGION"
 const IntProjectId = "ca-kijiji-int-t0z7"
 
+var servicefile = "scheduler/SchedulerServices.csv"
+
 type Service struct {
 	name         string
 	minInstances int
 }
 
 func main() {
-	//For local debugging set below env
+	// Uncomment below for local debugging
 	//os.Setenv(Token, "my-token")
-	//os.Setenv(TRAFFIC, "low")
+	//os.Setenv(TRAFFIC, "high")
 	//os.Setenv(REGION, "us-central1")
+	//servicefile = ".github/scheduler/SchedulerServices.csv"
 
+	servicefile = os.Getenv("CSVFILE")
 	fmt.Println("Updating Min Instances...")
 	validateEnv()
 	filteredServices := getWhiteListedServices(os.Getenv(TRAFFIC))
@@ -104,47 +108,50 @@ func validateEnv() {
 }
 
 func getWhiteListedServices(traffic string) []Service {
-	file, err := os.Open("scheduler/SchedulerServices.txt")
+	file, err := os.Open(servicefile)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
 	defer file.Close()
-
-	// Create a scanner to read the file line by line
-	scanner := bufio.NewScanner(file)
-
-	var services []Service
 	minInstances := 1 // Set all service instance to 1 for high traffic hours
 	if traffic == LowTraffic {
 		minInstances = 0 // Set all service instance to 0 for low traffic hours
 	}
-	for scanner.Scan() {
-		line := scanner.Text()
-		if len(strings.TrimSpace(line)) == 0 || strings.HasPrefix(line, "#") {
-			continue
+	var services []Service
+
+	// Create a scanner to read the file line by line
+	reader := csv.NewReader(file)
+	// discarding first header row
+	reader.Read()
+	for {
+		// Read a single line from the file
+		record, err := reader.Read()
+		// Check for end of file
+		if err != nil {
+			//If it's the end of the file, break the loop
+			if err.Error() == "EOF" {
+				break
+			}
 		}
-		split := strings.Split(line, "=")
-		if strings.Contains(line, "=") {
-			lowHighTrafficSplit := strings.Split(split[1], ",")
+		if len(record) == 1 {
+			services = append(services, Service{record[0], minInstances})
+		} else if len(record) == 3 {
 			if traffic == LowTraffic {
-				cloudRunInstanceCount, err := strconv.Atoi(strings.TrimSpace(strings.TrimSpace(lowHighTrafficSplit[0])))
-				if err != nil {
-					fmt.Errorf("Error reading min instance for '%s' \n", split[0])
-				}
-				minInstances = cloudRunInstanceCount
+				services = append(services, Service{record[0], parseString(record[1])})
+			} else {
+				services = append(services, Service{record[0], parseString(record[2])})
 			}
-			if traffic == HighTraffic {
-				cloudRunInstanceCount, err := strconv.Atoi(strings.TrimSpace(strings.TrimSpace(lowHighTrafficSplit[1])))
-				if err != nil {
-					fmt.Errorf("Error reading min instance for '%s' \n", split[0])
-				}
-				minInstances = cloudRunInstanceCount
-			}
-			services = append(services, Service{strings.TrimSpace(split[0]), minInstances})
 		} else {
-			services = append(services, Service{strings.TrimSpace(line), minInstances})
+			log.Fatalf("Error parsing line: %d \n", len(record))
 		}
 	}
-
 	return services
+}
+
+func parseString(val string) int {
+	intVal, err := strconv.Atoi(strings.TrimSpace(val))
+	if err != nil {
+		fmt.Errorf("Error reading min instance for '%s' \n", val)
+	}
+	return intVal
 }
