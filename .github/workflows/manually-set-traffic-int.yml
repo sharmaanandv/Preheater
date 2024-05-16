@@ -11,11 +11,11 @@ on:
           - high
       GOFILE:
         required: true
-        description: 'temp change'
+        description: 'Gofile [temp change]'
         type: string
       CSVFILE:
         required: true
-        description: 'temp change'
+        description: 'Csv file [temp change]'
         type: string
 
 jobs:
