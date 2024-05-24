@@ -18,7 +18,7 @@ const IntProjectId = "int"
 
 func main() {
 	//os.Setenv(TRAFFIC, "high") // Uncomment for local debugging
-	fmt.Println("Updating Min Instances...")
+	// fmt.Println("Updating Min Instances...")
 	validateEnv()
 	data:= getWhiteListedServicesMap(os.Getenv(TRAFFIC))
 	jsonData, err := json.Marshal(data)
