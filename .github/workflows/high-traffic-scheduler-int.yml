@@ -1,8 +1,8 @@
 name: High Traffic Scheduler For Int Env
 
-on:
-  schedule:
-    - cron: '0 12 * * 1-5' # This will run at 8 am EST (12 pm UTC) from Monday to Friday
+#on:
+  #schedule:
+    #- cron: '0 12 * * 1-5' # This will run at 8 am EST (12 pm UTC) from Monday to Friday
 
 jobs:
   HighTrafficScheduler:
