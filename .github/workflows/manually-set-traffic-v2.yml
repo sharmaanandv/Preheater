@@ -6,17 +6,18 @@ on:
       TRAFFIC:
         description: 'low traffic for peak off hours vice versa'
         required: true
+        default: high
         options:
           - low
           - high
-      GOFILE:
-        required: true
-        description: 'Gofile [temp change]'
-        type: string
-      CSVFILE:
-        required: true
-        description: 'Csv file [temp change]'
-        type: string
+      # GOFILE:
+      #   required: true
+      #   description: 'Gofile [temp change]'
+      #   type: string
+      # CSVFILE:
+      #   required: true
+      #   description: 'Csv file [temp change]'
+      #   type: string
 
 jobs:
   ManualTriggerScheduler:
@@ -59,6 +60,6 @@ jobs:
           # echo "$json_output" | jq -r 'to_entries|map("\(.key) \(.value)")|.[]' | while IFS=' ' read -r key value; do
           echo "$json_output" | jq -r 'to_entries|.[]|"\(.key) \(.value)"' | while read -r key value; do
             echo "Executing $key: $value"
-            eval "gcloud run services update $key --min-instances $value"
+            eval "gcloud --version"
             echo "done"
           done
