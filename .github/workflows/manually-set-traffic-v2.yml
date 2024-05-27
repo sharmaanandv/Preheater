@@ -59,5 +59,6 @@ jobs:
           echo "$json_output" | jq -r 'to_entries|map("\(.key) \(.value)")|.[]' | while IFS=' ' read -r key value; do
           
             echo "Executing $key: $value"
-            eval gcloud run services update  $key --min-instances $value
+            eval gcloud --version
+            echo "done"
           done
