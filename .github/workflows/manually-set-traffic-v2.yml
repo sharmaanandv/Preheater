@@ -55,7 +55,7 @@ jobs:
         id: execute-commands
         run: |
           gcloud config set project $PROJECTID
-          gcloud config set region us-east4
+          gcloud config set compute/region us-east4
           # Read JSON output from Go program
           json_output=$(cat output.json)
           echo "JSON output: $json_output"
