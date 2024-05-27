@@ -22,6 +22,8 @@ on:
 jobs:
   ManualTriggerScheduler:
     runs-on: ubuntu-latest
+    env:
+      PROJECTID : "abc"
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -52,6 +54,8 @@ jobs:
       - name: Read and execute commands from map
         id: execute-commands
         run: |
+          echo $PROJECTID
+          gcloud config set project $PROJECTID
           # Read JSON output from Go program
           json_output=$(cat output.json)
           echo "JSON output: $json_output"
