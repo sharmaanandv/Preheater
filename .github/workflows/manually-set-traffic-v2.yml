@@ -54,8 +54,8 @@ jobs:
       - name: Read and execute commands from map
         id: execute-commands
         run: |
-          echo $PROJECTID
           gcloud config set project $PROJECTID
+          gcloud config set region us-east4
           # Read JSON output from Go program
           json_output=$(cat output.json)
           echo "JSON output: $json_output"
