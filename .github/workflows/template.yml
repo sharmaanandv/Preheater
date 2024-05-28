@@ -1,15 +1,16 @@
 name: Manually Trigger Traffic For Int Env
 
 on:
-  workflow_dispatch:
-    inputs:
-      TRAFFIC:
-        description: 'low traffic for peak off hours vice versa'
-        required: true
-        default: high
-        options:
-          - low
-          - high
+  
+  # workflow_dispatch:
+  #   inputs:
+  #     TRAFFIC:
+  #       description: 'low traffic for peak off hours vice versa'
+  #       required: true
+  #       default: high
+  #       options:
+  #         - low
+  #         - high
       # GOFILE:
       #   required: true
       #   description: 'Gofile [temp change]'
