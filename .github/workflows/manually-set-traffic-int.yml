@@ -14,4 +14,4 @@ on:
 
 jobs:
   ManualTriggerScheduler:
-    uses: Preheater/.github/workflows/template.yml@main
+    uses: sharmaanandv/Preheater/.github/workflows/template.yml@main
