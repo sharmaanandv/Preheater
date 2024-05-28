@@ -1,43 +1,17 @@
 name: Manually Trigger Traffic For Int Env
 
 on:
+  
   workflow_dispatch:
     inputs:
       TRAFFIC:
-        description: 'low traffic for peak off hours vice versa'
+        description: 'Traffic: low or high'
         required: true
+        default: high
         options:
           - low
           - high
-      GOFILE:
-        required: true
-        description: 'Gofile [temp change]'
-        type: string
-      CSVFILE:
-        required: true
-        description: 'Csv file [temp change]'
-        type: string
 
 jobs:
   ManualTriggerScheduler:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-#      - id: 'auth'
-#        uses: google-github-actions/auth@v0.7.1
-#        with:
-#          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-#      - name: 'Set up Cloud SDK'
-#        uses: google-github-actions/setup-gcloud@v0.6.0
-      - name: Set up Go environment
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.18'
-      - name: Run Go
-        env:
-          TOKEN: "tokenkey"
-          TRAFFIC: ${{ inputs.TRAFFIC }}
-          REGION: "us-east-1"
-          CSVFILE: ${{inputs.CSVFILE}}
-        run: go run ${{inputs.GOFILE}}
+    uses: ./.github/workflows/template.yml
