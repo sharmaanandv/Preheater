@@ -1,7 +1,7 @@
 name: Manually Trigger Traffic For Int Env
 
 on:
-  
+  workflow_call:
   # workflow_dispatch:
   #   inputs:
   #     TRAFFIC:
