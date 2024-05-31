@@ -55,6 +55,7 @@ jobs:
       - name: Read and execute commands from map
         id: execute-commands
         run: |
+          echo "${{ secrets.env }}"
           # gcloud config set project $PROJECTID
           # gcloud config set compute/region us-east4
           # Read JSON output from Go program
