@@ -1,6 +1,7 @@
 name: High Traffic Scheduler V2
 
-#on:
+on:
+  workflow_dispatch:
   #schedule:
     #- cron: '0 12 * * 1-5' # This will run at 8 am EST (12 pm UTC) from Monday to Friday
 
